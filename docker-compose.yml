@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: animap-db
+    environment:
+      POSTGRES_DB: animap
+      POSTGRES_USER: animap
+      POSTGRES_PASSWORD: animap
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U animap -d animap"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
